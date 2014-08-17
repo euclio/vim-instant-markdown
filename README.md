@@ -8,7 +8,7 @@ As a bonus, [github-flavored-markdown][gfm] is supported, and styles used while 
 
 Installation
 ------------
-You first need to have Ruby with RubyGems, and node.js with npm installed. (In the future there might be a version which won't require node.js at all, making installation easier)
+You first need to have Ruby with RubyGems, and node.js with npm installed. (In the future there might be a version which won't require node.js at all, making installation easier). If you're using Windows, you will also need into install [cURL][curl] and put it on your `%PATH%`.
 
 - `[sudo] gem install pygments.rb`
 - If you're using Ruby 1.9.2 or later, `[sudo] gem install redcarpet`. Otherwise, `[sudo] gem install redcarpet -v 2.3.0`
@@ -45,9 +45,11 @@ in your .vimrc. You can then manually trigger preview via the command ```:Instan
 
 Supported Platforms
 -------------------
-OSX and Unix/Linuxes*.
+OSX, Unix/Linuxes*, and Windows**.
 
 <sub>*: One annoyance in Linux is that there's no way to reliably open a browser page in the background, so you'll likely have to manually refocus your vim session everytime you open a Markdown file. If you have ideas on how to address this I'd love to know!</sub>
+
+<sub>**: In Windows, there's no easy way to execute commands asynchronously without popping up a cmd.exe window. Thus, if you run this plugin without `g:instant_markdown_slow`, you might experience performance issues.</sub>
 
 FAQ
 ---
@@ -72,4 +74,5 @@ If you're curious, the code for the mini-server component for this plugin can be
 [ss]: http://dl.dropbox.com/u/28956267/instant-markdown-demo_thumb.gif  "Click for bigger preview"
 [ssbig]: http://dl.dropbox.com/u/28956267/instant-markdown-demo.gif
 [gfm]: http://github.github.com/github-flavored-markdown/
+[curl]: http://curl.haxx.se/download.html
 [tpope-markdown]: https://github.com/tpope/vim-markdown
