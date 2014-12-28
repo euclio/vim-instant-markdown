@@ -7,6 +7,10 @@ if !exists('g:instant_markdown_autostart')
     let g:instant_markdown_autostart = 1
 endif
 
+" Find server path
+let s:bundle_path = escape(expand('<sfile>:p:h'), '\') . '/../../../'
+let s:server_path = s:bundle_path . 'node_modules/instant-markdown-d/instant-markdown-d'
+
 " # Utility Functions
 " Simple system wrapper that ignores empty second args
 function! s:system(cmd, stdin)
@@ -21,8 +25,8 @@ endfu
 " redirect output in a cross-platform way. Note that stdin must be passed as a
 " List of lines.
 function! s:systemasync(cmd, stdinLines)
-    if has('win32') || has('win64')
-        call s:winasync(a:cmd, a:stdinLines)
+if has('win32') || has('win64')
+call s:winasync(a:cmd, a:stdinLines)
     else
         let cmd = a:cmd . '&>/dev/null &'
         call s:system(cmd, join(a:stdinLines, "\n"))
@@ -54,7 +58,10 @@ function! s:refreshView()
 endfu
 
 function! s:startDaemon(initialMDLines)
-    call s:systemasync('instant-markdown-d', a:initialMDLines)
+    if !filereadable(s:server_path)
+        echoerr "Server not found at " . simplify(s:server_path) . ". Please reinstall the server."
+    endif
+    call s:systemasync(s:server_path, a:initialMDLines)
 endfu
 
 function! s:initDict()
