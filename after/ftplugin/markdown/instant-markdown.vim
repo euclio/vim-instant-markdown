@@ -23,8 +23,15 @@ function! s:refreshView()
                 \ s:bufGetContents(bufnr))
 endfu
 
+" Find server path
+let s:bundle_path = escape(expand('<sfile>:p:h'), '\') . '/../../../'
+let s:server_path = s:bundle_path . 'node_modules/instant-markdown-d/instant-markdown-d'
+
 function! s:startDaemon(initialMD)
-    call s:system("instant-markdown-d &>/dev/null &", a:initialMD)
+    if !filereadable(s:server_path)
+        echoerr "Server not found at " . simplify(s:server_path) . ". Please reinstall the server."
+    endif
+    call s:system(s:server_path . " &>/dev/null &", a:initialMD)
 endfu
 
 function! s:initDict()
