@@ -25,10 +25,15 @@ endfu
 " redirect output in a cross-platform way. Note that stdin must be passed as a
 " List of lines.
 function! s:systemasync(cmd, stdinLines)
-if has('win32') || has('win64')
-call s:winasync(a:cmd, a:stdinLines)
+    if has('win32') || has('win64')
+        call s:winasync(a:cmd, a:stdinLines)
     else
-        let cmd = a:cmd . '&>/dev/null &'
+        if fnamemodify(&shell, ':t') ==# 'fish'
+            let s:output_redirect = ' >/dev/null ^/dev/null'
+        else
+            let s:output_redirect = ' &> /dev/null'
+        endif
+        let cmd = a:cmd . s:output_redirect . ' &'
         call s:system(cmd, join(a:stdinLines, "\n"))
     endif
 endfu
